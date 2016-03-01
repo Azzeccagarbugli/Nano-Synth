@@ -1,2 +1,2 @@
 # Nano-Synth
-Sintetizzatore basilare per progetto scolastico compilato usando Arduino e Mozzi
+Sintetizzatore basato sulla piattaforma Arduino usando Mozzi come tool principale
