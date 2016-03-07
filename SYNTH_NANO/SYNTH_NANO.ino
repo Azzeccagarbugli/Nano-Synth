@@ -47,14 +47,16 @@ const int MAX_INTENSITY = 10;
 
 AutoMap kMapCarrierFreq(0,1023,MIN_CARRIER_FREQ,MAX_CARRIER_FREQ);
 AutoMap kMapIntensity(0,1023,MIN_INTENSITY,MAX_INTENSITY);
+AutoMap KPot_Harmonic(1,1023,1,6);
 
 const int KNOB_PIN = 0; // set the input for the knob to analog pin 0
 const int LDR_PIN = 1; // set the input for the LDR to analog pin 1
+const int HARMONIC = 2; //Cambio il numero di armoniche
 
 Oscil<COS2048_NUM_CELLS, AUDIO_RATE> aCarrier(COS2048_DATA);
 Oscil<COS2048_NUM_CELLS, AUDIO_RATE> aModulator(COS2048_DATA);
 
-int mod_ratio = 3; // harmonics
+int mod_ratio; // harmonics
 long fm_intensity; // carries control info from updateControl() to updateAudio()
 
 
@@ -70,6 +72,16 @@ void setup(){
 
 
 void updateControl(){
+  int Pot_Harmonic = mozziAnalogRead(HARMONIC); //Leggo il valore del secondo pot
+  
+  int ARMONICHE = KPot_Harmonic(Pot_Harmonic);  //Richiamo la mappatura per un effettiva conversione del valore
+  
+  mod_ratio = ARMONICHE; //Il valore del potenziomentro (0,6) sarà il valore dell'ottava
+  
+  Serial.print("ARMONICA = ");
+  Serial.print(mod_ratio);
+  Serial.print("\t");
+  
   // read the knob
   int knob_value = mozziAnalogRead(KNOB_PIN); // value is 0-1023
 
