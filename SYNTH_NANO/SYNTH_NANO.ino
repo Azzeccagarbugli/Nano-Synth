@@ -1,47 +1,32 @@
 /* 
-  Example using a light dependent resistor (LDR) to change 
-  an FM synthesis parameter, and a knob for fundamental frequency,
-  using Mozzi sonification library.
+ _   _                     ____              _   _     
+| \ | | __ _ _ __   ___   / ___| _   _ _ __ | |_| |__  
+|  \| |/ _` | '_ \ / _ \  \___ \| | | | '_ \| __| '_ \ 
+| |\  | (_| | | | | (_) |  ___) | |_| | | | | |_| | | |
+|_| \_|\__,_|_| |_|\___/  |____/ \__, |_| |_|\__|_| |_|
+                                 |___/                 
 
-  Demonstrates analog input, audio oscillators, and phase modulation.
-  Also demonstrates AutoMap, which maps unpredictable inputs to a set range.
-  There might be clicks in the audio from rapid control changes, which
-  could be smoothed with Line or Smooth objects.
-    
-  This example goes with a tutorial on the Mozzi site:
-  http://sensorium.github.io/Mozzi/learn/introductory-tutorial/
-  
-  The circuit:
-     Audio output on digital pin 9 on a Uno or similar, or
-    DAC/A14 on Teensy 3.1, or 
-     check the README or http://sensorium.github.com/Mozzi/
+Sintetizzatore anologico nano powered by Arduino
 
-     Potentiometer connected to analog pin 0.
-       Center pin of the potentiometer goes to the analog pin.
-       Side pins of the potentiometer go to +5V and ground
-  
-     Light dependent resistor (LDR) and 5.1k resistor on analog pin 1:
-       LDR from analog pin to +5V (3.3V on Teensy 3.1)
-       5.1k resistor from analog pin to ground
-  
-  Mozzi help/discussion/announcements:
-  https://groups.google.com/forum/#!forum/mozzi-users
-
-  Tim Barrass 2013, CC by-nc-sa.
+Progetto scolastico a cura di:    Francesco Coppola
+                                  Matteo Mancini
+                                  Enrico Tozzi
+                                  Samuele Fugnanesi
+                                  Alessandro Raggi
+                                  Mosè Zamparini
 */
 
-//#include <ADC.h>  // Teensy 3.1 uncomment this line and install http://github.com/pedvide/ADC
 #include <MozziGuts.h>
-#include <Oscil.h> // oscillator 
-#include <tables/cos2048_int8.h> // table for Oscils to play
-#include <AutoMap.h> // maps unpredictable inputs to a range
+#include <Oscil.h> // Oscillatore
+#include <tables/cos2048_int8.h> // Tavole armoniche per l'oscillatore
+#include <AutoMap.h> //AutoMap
 #include <EventDelay.h>
 
-// desired carrier frequency max and min, for AutoMap
+// Dichiaro valore max e min per l'AutoMap, for AutoMap
 const int MIN_CARRIER_FREQ = 22;
 const int MAX_CARRIER_FREQ = 440;
 
-// desired intensity max and min, for AutoMap, note they're inverted for reverse dynamics
+// Faccio la stessa cosa, in questo caso per la fotoresitenza, valore max and min
 const int MIN_INTENSITY = 700;
 const int MAX_INTENSITY = 10;
 
@@ -49,15 +34,15 @@ AutoMap kMapCarrierFreq(0,1023,MIN_CARRIER_FREQ,MAX_CARRIER_FREQ);
 AutoMap kMapIntensity(0,1023,MIN_INTENSITY,MAX_INTENSITY);
 AutoMap KPot_Harmonic(1,1023,1,6);
 
-const int KNOB_PIN = 0; // set the input for the knob to analog pin 0
-const int LDR_PIN = 1; // set the input for the LDR to analog pin 1
-const int HARMONIC = 2; //Cambio il numero di armoniche
+const int KNOB_PIN = 0; //Modifico ampiezza dell'onda, Potenziometro A0
+const int LDR_PIN = 1; //Vario la frequenza dell'onda, Fotoresitenza A1
+const int HARMONIC = 2; //Cambio il numero di armoniche, Potenziometro A2
 
 Oscil<COS2048_NUM_CELLS, AUDIO_RATE> aCarrier(COS2048_DATA);
 Oscil<COS2048_NUM_CELLS, AUDIO_RATE> aModulator(COS2048_DATA);
 
-int mod_ratio; // harmonics
-long fm_intensity; // carries control info from updateControl() to updateAudio()
+int mod_ratio; // Armoniche
+long fm_intensity; // Valore che modifico nell'UpdateAudio();
 
 
 void setup(){
@@ -65,13 +50,14 @@ void setup(){
   pinMode(3, OUTPUT);
   pinMode(4, OUTPUT);
   pinMode(7, OUTPUT);
-  //Serial.begin(9600); // for Teensy 3.1, beware printout can cause glitches
-  Serial.begin(115200); // set up the Serial output so we can look at the piezo values // set up the Serial output for debugging
+  Serial.begin(115200);
   startMozzi(); // :))
 }
 
 
-void updateControl(){
+void updateControl()
+{
+  
   int Pot_Harmonic = mozziAnalogRead(HARMONIC); //Leggo il valore del secondo pot
   
   int ARMONICHE = KPot_Harmonic(Pot_Harmonic);  //Richiamo la mappatura per un effettiva conversione del valore
@@ -82,21 +68,18 @@ void updateControl(){
   Serial.print(mod_ratio);
   Serial.print("\t");
   
-  // read the knob
-  int knob_value = mozziAnalogRead(KNOB_PIN); // value is 0-1023
+  
+  int knob_value = mozziAnalogRead(KNOB_PIN); // Valore compreso 0-1023 // Leggo il Pot A0
 
-  // map the knob to carrier frequency
-  int carrier_freq = kMapCarrierFreq(knob_value);
+  int carrier_freq = kMapCarrierFreq(knob_value);   // Mappo il Pot A0
   
-  //calculate the modulation frequency to stay in ratio
-  int mod_freq = carrier_freq * mod_ratio;
-  
-  // set the FM oscillator frequencies to the calculated values
+  int mod_freq = carrier_freq * mod_ratio;  //Modifico i vari parametri nella Modulation
+
   aCarrier.setFreq(carrier_freq); 
   aModulator.setFreq(mod_freq);
   
-  // read the light dependent resistor on the Analog input pin
-  int light_level= mozziAnalogRead(LDR_PIN); // value is 0-1023
+  //Leggo il valore della fotoresitenza
+  int light_level= mozziAnalogRead(LDR_PIN); // Valore compreso 0-1023
   
   if(light_level<50)
   {
@@ -110,10 +93,9 @@ void updateControl(){
      digitalWrite(7,HIGH);
     }
  
-  // print the value to the Serial monitor for debugging
   Serial.print("light_level = "); 
   Serial.print(light_level); 
-  Serial.print("\t"); // prints a tab
+  Serial.print("\t"); 
   
   fm_intensity = kMapIntensity(light_level);
   
@@ -159,14 +141,14 @@ void updateControl(){
   
   Serial.print("fm_intensity = ");
   Serial.print(fm_intensity);
-  Serial.println(); // print a carraige return for the next line of debugging info
+  Serial.println(); 
 
 }
 
 
 int updateAudio(){
   long modulation = fm_intensity * aModulator.next(); 
-  return aCarrier.phMod(modulation); // phMod does the FM
+  return aCarrier.phMod(modulation); 
 }
 
 
