@@ -46,10 +46,10 @@ long fm_intensity; // Valore che modifico nell'UpdateAudio();
 
 
 void setup(){
-  pinMode(2, OUTPUT);
-  pinMode(3, OUTPUT);
-  pinMode(4, OUTPUT);
-  pinMode(7, OUTPUT);
+  pinMode(2, OUTPUT); //Pin D2, output led Rosso
+  pinMode(3, OUTPUT); //Pin D3, output led Rosso
+  pinMode(4, OUTPUT); //Pin D4, output led Rosso
+  pinMode(7, OUTPUT); //Pin D7, output led Verde
   Serial.begin(115200);
   startMozzi(); // :))
 }
@@ -156,4 +156,3 @@ void loop(){
   
   audioHook();
 }
-
