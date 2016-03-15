@@ -81,7 +81,7 @@ void updateControl()
   //Leggo il valore della fotoresitenza
   int light_level= mozziAnalogRead(LDR_PIN); // Valore compreso 0-1023
   
-  if(light_level<50)
+  if(light_level<50) //Condizione che verifica l'intensità della luce e che quindi aziona il led Verde
   {
     digitalWrite(7, HIGH);
     EventDelay(100);
