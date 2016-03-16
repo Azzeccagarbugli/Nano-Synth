@@ -1,0 +1,28 @@
+GLOSSARIO
+
+Arduino: Arduino è una scheda elettronica di piccole dimensioni con un microcontrollore e circuiteria di contorno, utile per creare rapidamente prototipi a scopi didattici. 
+
+BreadBoard: Una bread board è uno strumento utilizzato per creare prototipi di circuiti elettrici.
+Essa consiste in una base in plastica con numerosi fori nei quali inserire i reofori. Questi vengono fermati meccanicamente e collegati elettricamente mediante delle clip metalliche. La distanza tra i fori è tipicamente di 2,54 mm, per la compatibilità con i circuiti integrati nel package "dual in line" (DIPs).
+
+Potenziometro: Il potenziometro è un dispositivo elettrico equivalente ad un partitore di tensione resistivo variabile.
+Il potenziometro è costituito da un cilindro isolante su cui è fittamente avvolto un filo metallico con resistività opportuna, le due estremità sono connesse a due morsetti. 
+Longitudinalmente al cilindro e da un'estremità all'altra, scorre un cursore recante un contatto strisciante sul filo, a sua volta collegato ad un morsetto.
+
+Resistenza: Essa è un tipo di componente elettrico destinato a fornire una specifica resitenza elettrica al passaggio di una tensione.
+
+Fotoresistenza: La fotoresistenza è un componente elettronico la cui resistenza è inversamente proporzionale alla quantità di luce che lo colpisce.
+Con un fotoresistore è possibile realizzare una sorta di potenziometro, attuabile tramite la luce anziché tramite forze meccaniche o segnali elettrici, che può essere integrato in dispositivi informatici.
+
+Audio Socket: L'Audio Socket è un dispositivo funzionale all'uscita output del suono composto da due pin e un foro centrale al cui interno verrà inserito il jack audio da 3,5mm.
+
+Codice Sorgente: Il codice sorgente in informatica, è il testo di un algoritmo di un programma scritto in un linguaggio di programmazione. 
+Il sorgente scritto dovrà essere opportunamente elaborato per arrivare a un programma eseguibile dal processore ponendosi dunque come punto di partenza dell'intero processo che porta all'esecuzione del programma stesso da parte di uno specifico hardware.
+
+SDK: Software development kit (traducibile in italiano come "pacchetto di sviluppo per applicazioni"), in informatica, indica genericamente un insieme di strumenti per lo sviluppo di un software.
+
+Wiring: Esso è il linguaggio di sviluppo utilizzato per la programzzione del microcontrollore (Arduino). Utilizza delle API (Application Program Interface) e delle librerie derivate dal C/C++ che ne facilitano l'utilizzo e la scrittura di un software più o meno complesso. 
+
+
+
+
